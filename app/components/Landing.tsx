@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { track } from "@vercel/analytics";
+import { initAnalytics, trackEvent as track } from "@/lib/analytics";
 import { upload } from "@vercel/blob/client";
 import { getRef } from "@/lib/ref";
 import { EXERCISES, MAX_VIDEO_BYTES } from "@/lib/exercises";
@@ -45,6 +45,7 @@ export default function Landing() {
 
   useEffect(() => {
     ref.current = getRef();
+    initAnalytics(ref.current);
     track("page_view", { r: ref.current });
   }, []);
 
