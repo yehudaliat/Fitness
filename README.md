@@ -2,16 +2,17 @@
 
 ## הגדרה
 1. Vercel → Storage → Create → Blob, ובחירה ב-**Private**. חברו את ה-store לפרויקט (נוצר `BLOB_READ_WRITE_TOKEN`).
-2. Environment Variables: `ADMIN_PASSWORD` (לדף `/admin`, שם המשתמש לא משנה).
-3. Analytics → Enable. אירועים מותאמים אישית (custom events) דורשים תוכנית Pro.
-4. Mixpanel: `NEXT_PUBLIC_MIXPANEL_TOKEN` (Project Token). לפרויקט ב-EU גם `NEXT_PUBLIC_MIXPANEL_API_HOST=https://api-eu.mixpanel.com`. אחרי שינוי צריך Redeploy, כי הערך נכנס לקוד בזמן ה-build.
-5. לשים את סרטון הדוגמה ב-`public/example.mp4`.
-6. טקסט המשוב לדוגמה: `app/components/Landing.tsx`, שלושת ה-placeholders המסומנים ב-TODO.
+2. Environment Variables (Production + Preview):
+   - `ADMIN_PASSWORD`: סיסמה לדף `/admin` (שם המשתמש לא משנה).
+   - `NEXT_PUBLIC_MIXPANEL_TOKEN`: ה-Project Token מ-Mixpanel. נכנס לקוד בזמן ה-build, ולכן אחרי שינוי צריך Redeploy.
+3. סרטון הדוגמה: `public/example.mp4`. תמונת פתיחה (לא חובה): `public/example-poster.jpg`. בלי סרטון מוצגת מסגרת ריקה במקום נגן שבור.
+4. טקסט המשוב לדוגמה: `app/components/Landing.tsx`, שלושת ה-placeholders המסומנים ב-TODO.
 
-## אירועים
-`page_view`, `video_example_play`, `form_start`, `upload_start`, `submit_success`. לכולם יש מאפיין `r` (1–10, או `none`).
-ב-Mixpanel כל משתתף מזוהה כ-`r1`…`r10`, כך שאפשר לראות ב-Users את המסלול של כל אחד.
-ההעלאה מתחילה כשבוחרים סרטון, ולכן `upload_start` = "בחר/ה סרטון".
+## מדידה (Mixpanel)
+- זיהוי: `?r=1`…`?r=10` → `identify("r-N")` + `register({ r })`. ה-r נשמר ב-localStorage.
+- Session Replay על 100% מהביקורים. כל השדות ממוסכים, הסרטונים חסומים, ושם הקובץ שנבחר לא מוקלט.
+- אירועים: `Example Opened`, `CTA Clicked`, `Form Started` (פעם אחת בביקור), `Video Selected`, `Upload Started`, `Upload Failed`, `Form Submitted`, וגם צפיית דף אוטומטית.
+- לא נשלחים שם, פרטי קשר או טקסט הכאב. הם נשמרים רק ב-Blob הפרטי ומוצגים ב-`/admin`.
 
 ## פיתוח מקומי
 ```
